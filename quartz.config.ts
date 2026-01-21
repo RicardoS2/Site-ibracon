@@ -14,7 +14,8 @@ const config: QuartzConfig = {
 
     locale: "pt-BR",
 
-    baseUrl: "ricardos2.github.io/Clube da pesquisa",
+    // Base URL correto para GitHub Pages do repo Site-ibracon
+    baseUrl: "/Site-ibracon",
 
     ignorePatterns: ["private", "templates", ".obsidian", "**/*.canvas", "**/*.excalidraw"],
 
@@ -22,7 +23,6 @@ const config: QuartzConfig = {
 
     analytics: {
       provider: "plausible",
-      // Só funciona se você realmente usar Plausible
       // domain: "site-ibracon.org"
     },
 
@@ -31,8 +31,8 @@ const config: QuartzConfig = {
       cdnCaching: true,
 
       typography: {
-        header: "Schibsted Grotesk",
-        body: "Source Sans Pro",
+        header: "Arial",
+        body: "Arial",
         code: "IBM Plex Mono",
       },
 
@@ -100,9 +100,7 @@ const config: QuartzConfig = {
       }),
     ],
 
-    filters: [
-      Plugin.RemoveDrafts(), // frontmatter: draft: true
-    ],
+    filters: [Plugin.RemoveDrafts()],
 
     emitters: [
       Plugin.AliasRedirects(),
@@ -122,7 +120,6 @@ const config: QuartzConfig = {
       Plugin.Favicon(),
       Plugin.NotFoundPage(),
 
-      // Ativar só se quiser OG images (pesado)
       Plugin.CustomOgImages(),
     ],
   },

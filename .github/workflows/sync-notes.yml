@@ -3,10 +3,10 @@ name: Sync Notes → Quartz
 on:
   repository_dispatch:
     types: [sync-notes] # disparado pelo repo notes
-  workflow_dispatch: # opcional, para disparar manualmente
+  workflow_dispatch: # opcional, para testar manualmente
 
 permissions:
-  contents: write # permite git add/push
+  contents: write # necessário para git add/commit/push
 
 jobs:
   sync:
