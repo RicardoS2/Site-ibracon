@@ -1,11 +1,9 @@
 name: Sync Notes → Quartz
 
 on:
-  workflow_dispatch:
   repository_dispatch:
     types: [sync-notes]
-  push:
-    branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -15,24 +13,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Quartz repo
+        uses: actions/checkout@v4
 
       - name: Clone notes repo
         run: |
-          git clone https://github.com/RicardoS2/notes.git vault
+          git clone https://github.com/RicardoS2/notes.git notes
 
-      - name: Sync content
+      - name: Sync notes into Quartz content
         run: |
           rsync -av --delete \
-            vault/ content/ \
+            notes/ content/ \
             --exclude ".obsidian" \
             --exclude ".git" \
             --exclude "_templates"
 
-      - name: Commit content
+      - name: Commit changes
         run: |
           git config user.name "Quartz Sync Bot"
           git config user.email "actions@github.com"
           git add content
-          git commit -m "Sync automático das notas" || echo "Nada mudou"
+          git commit -m "sync: update notes from notes repo" || echo "No changes"
           git push
