@@ -15,21 +15,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Quartz repo
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Clone notes repo
         run: |
-          git clone https://x-access-token:${{ secrets.NOTES_REPO_TOKEN }}@github.com/RicardoS2/notes.git vault
+          git clone https://github.com/RicardoS2/notes.git vault
 
       - name: Sync content
         run: |
           rsync -av --delete \
             vault/ content/ \
             --exclude ".obsidian" \
-            --exclude "*.canvas" \
-            --exclude "_templates" \
-            --exclude ".git"
+            --exclude ".git" \
+            --exclude "_templates"
 
       - name: Commit content
         run: |

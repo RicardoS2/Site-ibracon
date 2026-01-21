@@ -3,17 +3,22 @@ name: Trigger Quartz Update
 on:
   push:
     branches: [main]
-  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: write
 
 jobs:
   trigger:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Notify Quartz repo
+      - name: Trigger Site-ibracon
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           curl -X POST \
-            -H "Authorization: Bearer ${{ secrets.QUARTZ_TRIGGER_TOKEN }}" \
             -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer $GH_TOKEN" \
             https://api.github.com/repos/RicardoS2/Site-ibracon/dispatches \
             -d '{"event_type":"sync-notes"}'
