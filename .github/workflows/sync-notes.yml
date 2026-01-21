@@ -18,7 +18,7 @@ jobs:
 
       - name: Clone notes repo
         run: |
-          git clone https://github.com/RicardoS2/notes.git notes
+          git clone https://github.com/RicardoS2/notes notes
 
       - name: Sync notes into Quartz content
         run: |
