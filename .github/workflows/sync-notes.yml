@@ -2,18 +2,18 @@ name: Sync Notes → Quartz
 
 on:
   repository_dispatch:
-    types: [sync-notes] # disparado pelo repo notes
-  workflow_dispatch: # opcional, para testar manualmente
+    types: [sync-notes]
+  workflow_dispatch:
 
 permissions:
-  contents: write # necessário para git add/commit/push
+  contents: write
 
 jobs:
   sync:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout do Quartz
+      # 1️⃣ Checkout do Quartz repo
       - name: Checkout Quartz repo
         uses: actions/checkout@v4
         with:
@@ -23,7 +23,6 @@ jobs:
       # 2️⃣ Clonar repo notes com token
       - name: Clone notes repo
         run: |
-          echo "Clonando repo notes..."
           git clone https://$NOTES_READ_TOKEN@github.com/RicardoS2/notes.git notes
         env:
           NOTES_READ_TOKEN: ${{ secrets.NOTES_READ_TOKEN }}
@@ -31,13 +30,12 @@ jobs:
       # 3️⃣ Sincronizar os arquivos para content/
       - name: Sync notes into Quartz content
         run: |
-          echo "Sincronizando notes para content/..."
           rsync -av --delete \
             notes/ content/ \
-            --exclude ".obsidian" \
-            --exclude ".git" \
-            --exclude "_templates" \
-            --exclude ".github"
+            --exclude ".obsidian/" \
+            --exclude ".git/" \
+            --exclude "_templates/" \
+            --exclude ".github/"
 
       # 4️⃣ Configurar git
       - name: Configure Git
@@ -47,15 +45,15 @@ jobs:
 
       # 5️⃣ Adicionar apenas content/
       - name: Add changes
-        run: |
-          git add content
+        run: git add content
 
       # 6️⃣ Commit se houver alterações
       - name: Commit changes
         run: |
-          git diff --staged --quiet || git commit -m "sync: update notes from notes repo"
+          if ! git diff --staged --quiet; then
+            git commit -m "sync: update notes from notes repo"
+          fi
 
       # 7️⃣ Push para branch principal
       - name: Push changes
-        run: |
-          git push
+        run: git push
