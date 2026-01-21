@@ -20,11 +20,13 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
 
-      # 2️⃣ Clonar repo notes
+      # 2️⃣ Clonar repo notes com token
       - name: Clone notes repo
         run: |
           echo "Clonando repo notes..."
-          git clone https://github.com/RicardoS2/notes notes
+          git clone https://$NOTES_READ_TOKEN@github.com/RicardoS2/notes.git notes
+        env:
+          NOTES_READ_TOKEN: ${{ secrets.NOTES_READ_TOKEN }}
 
       # 3️⃣ Sincronizar os arquivos
       - name: Sync notes into Quartz content
