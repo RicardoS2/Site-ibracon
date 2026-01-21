@@ -14,7 +14,7 @@ const config: QuartzConfig = {
 
     locale: "pt-BR",
 
-    baseUrl: "ricardos2.github.io/Site-ibracon",
+    baseUrl: "ricardos2.github.io/Clube da pesquisa",
 
     ignorePatterns: ["private", "templates", ".obsidian", "**/*.canvas", "**/*.excalidraw"],
 

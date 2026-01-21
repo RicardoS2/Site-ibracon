@@ -28,7 +28,7 @@ jobs:
         env:
           NOTES_READ_TOKEN: ${{ secrets.NOTES_READ_TOKEN }}
 
-      # 3️⃣ Sincronizar os arquivos
+      # 3️⃣ Sincronizar os arquivos para content/
       - name: Sync notes into Quartz content
         run: |
           echo "Sincronizando notes para content/..."
@@ -36,7 +36,8 @@ jobs:
             notes/ content/ \
             --exclude ".obsidian" \
             --exclude ".git" \
-            --exclude "_templates"
+            --exclude "_templates" \
+            --exclude ".github"
 
       # 4️⃣ Configurar git
       - name: Configure Git
@@ -44,10 +45,10 @@ jobs:
           git config user.name "Quartz Sync Bot"
           git config user.email "actions@github.com"
 
-      # 5️⃣ Adicionar todas as alterações
+      # 5️⃣ Adicionar apenas content/
       - name: Add changes
         run: |
-          git add -A
+          git add content
 
       # 6️⃣ Commit se houver alterações
       - name: Commit changes
@@ -57,5 +58,4 @@ jobs:
       # 7️⃣ Push para branch principal
       - name: Push changes
         run: |
-          echo "Enviando alterações para o GitHub..."
           git push
