@@ -1,7 +1,8 @@
-name: Upload Preview Deployment
+name: Deploy Preview to GitHub Pages
+
 on:
   workflow_run:
-    workflows: ["Build Preview Deployment"]
+    workflows: ["Build Preview Deployment"] # nome do workflow que gera o site
     types:
       - completed
 
@@ -13,25 +14,26 @@ permissions:
 
 jobs:
   deploy-preview:
-    if: ${{ github.repository == 'jackyzha0/quartz' && github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.repository == 'RicardoS2/Site-ibracon' && github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
-    name: Deploy Preview to Cloudflare Pages
+    name: Deploy Preview to GitHub Pages
+
     steps:
+      # 1️⃣ Baixar o build artifact do workflow anterior
       - name: Download build artifact
         uses: actions/download-artifact@v7
-        id: preview-build-artifact
+        id: preview-build
         with:
           name: preview-build
           path: build
           github-token: ${{ secrets.GITHUB_TOKEN }}
           run-id: ${{ github.event.workflow_run.id }}
 
-      - name: Deploy to Cloudflare Pages
-        uses: AdrianGonz97/refined-cf-pages-action@v1
+      # 2️⃣ Publicar no GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v5
         with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
-          projectName: quartz
-          deploymentName: Branch Preview
-          directory: ${{ steps.preview-build-artifact.outputs.download-path }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
+          publish_branch: gh-pages
+          keep_files: false
