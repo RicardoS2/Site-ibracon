@@ -15,7 +15,7 @@ const config: QuartzConfig = {
     locale: "pt-BR",
 
     // Base URL correto para GitHub Pages do repo Site-ibracon
-    baseUrl: "/Site-ibracon",
+    baseUrl: "https://ricardos2.github.io/Site-ibracon",
 
     ignorePatterns: ["private", "templates", ".obsidian", "**/*.canvas", "**/*.excalidraw"],
 
