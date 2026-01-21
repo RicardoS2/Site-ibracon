@@ -7,7 +7,7 @@ import * as Plugin from "./quartz/plugins"
  */
 const config: QuartzConfig = {
   configuration: {
-    pageTitle: "Instituto Brasileiro de Concreto",
+    pageTitle: "Clube da Pesquisa",
     pageTitleSuffix: " · Conhecimento Técnico",
     enableSPA: true,
     enablePopovers: true,
