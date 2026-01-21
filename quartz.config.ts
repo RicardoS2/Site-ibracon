@@ -37,27 +37,28 @@ const config: QuartzConfig = {
       },
 
       colors: {
+        // Paleta Capuccino
         lightMode: {
-          light: "#faf8f8",
-          lightgray: "#e5e5e5",
-          gray: "#b8b8b8",
-          darkgray: "#4e4e4e",
-          dark: "#2b2b2b",
-          secondary: "#284b63",
-          tertiary: "#84a59d",
-          highlight: "rgba(143, 159, 169, 0.15)",
-          textHighlight: "#fff23688",
+          light: "#f6f0eb", // bege claro
+          lightgray: "#e0d6c3", // bege médio
+          gray: "#cbb8a9", // marrom suave
+          darkgray: "#9a8174", // marrom médio
+          dark: "#5c4431", // marrom escuro
+          secondary: "#8b6d5c", // marrom acobreado
+          tertiary: "#d9c4b0", // creme
+          highlight: "rgba(200, 170, 140, 0.2)",
+          textHighlight: "#fff8dc88",
         },
         darkMode: {
-          light: "#161618",
-          lightgray: "#393639",
-          gray: "#646464",
-          darkgray: "#d4d4d4",
-          dark: "#ebebec",
-          secondary: "#7b97aa",
-          tertiary: "#84a59d",
-          highlight: "rgba(143, 159, 169, 0.15)",
-          textHighlight: "#b3aa0288",
+          light: "#2c1f1a",
+          lightgray: "#4b3a34",
+          gray: "#6b5044",
+          darkgray: "#8c705d",
+          dark: "#a68970",
+          secondary: "#c1a183",
+          tertiary: "#d9c4b0",
+          highlight: "rgba(200, 170, 140, 0.2)",
+          textHighlight: "#f5e4d088",
         },
       },
     },
@@ -66,61 +67,35 @@ const config: QuartzConfig = {
   plugins: {
     transformers: [
       Plugin.FrontMatter(),
-
-      Plugin.CreatedModifiedDate({
-        priority: ["frontmatter", "git", "filesystem"],
-      }),
-
-      Plugin.ObsidianFlavoredMarkdown({
-        enableInHtmlEmbed: false,
-      }),
-
+      Plugin.CreatedModifiedDate({ priority: ["frontmatter", "git", "filesystem"] }),
+      Plugin.ObsidianFlavoredMarkdown({ enableInHtmlEmbed: false }),
       Plugin.GitHubFlavoredMarkdown(),
-
       Plugin.SyntaxHighlighting({
-        theme: {
-          light: "github-light",
-          dark: "github-dark",
-        },
+        theme: { light: "github-light", dark: "github-dark" },
         keepBackground: false,
       }),
-
-      Plugin.TableOfContents({
-        maxDepth: 4,
-      }),
-
-      Plugin.CrawlLinks({
-        markdownLinkResolution: "shortest",
-      }),
-
+      Plugin.TableOfContents({ maxDepth: 4 }),
+      Plugin.CrawlLinks({ markdownLinkResolution: "shortest" }),
       Plugin.Description(),
-
-      Plugin.Latex({
-        renderEngine: "katex",
-      }),
+      Plugin.Latex({ renderEngine: "katex" }),
     ],
 
-    filters: [Plugin.RemoveDrafts()],
+    filters: [
+      Plugin.RemoveDrafts(), // frontmatter: draft: true
+    ],
 
     emitters: [
       Plugin.AliasRedirects(),
       Plugin.ComponentResources(),
-
       Plugin.ContentPage(),
       Plugin.FolderPage(),
       Plugin.TagPage(),
-
-      Plugin.ContentIndex({
-        enableSiteMap: true,
-        enableRSS: true,
-      }),
-
+      Plugin.ContentIndex({ enableSiteMap: true, enableRSS: true }),
       Plugin.Assets(),
       Plugin.Static(),
       Plugin.Favicon(),
       Plugin.NotFoundPage(),
-
-      Plugin.CustomOgImages(),
+      Plugin.CustomOgImages(), // desative se não quiser OG images pesados
     ],
   },
 }
