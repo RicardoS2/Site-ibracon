@@ -2,36 +2,58 @@ name: Sync Notes → Quartz
 
 on:
   repository_dispatch:
-    types: [sync-notes]
-  workflow_dispatch:
+    types: [sync-notes] # disparado pelo repo notes
+  workflow_dispatch: # opcional, para disparar manualmente
 
 permissions:
-  contents: write
+  contents: write # permite git add/push
 
 jobs:
   sync:
     runs-on: ubuntu-latest
 
     steps:
+      # 1️⃣ Checkout do Quartz
       - name: Checkout Quartz repo
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
 
+      # 2️⃣ Clonar repo notes
       - name: Clone notes repo
         run: |
+          echo "Clonando repo notes..."
           git clone https://github.com/RicardoS2/notes notes
 
+      # 3️⃣ Sincronizar os arquivos
       - name: Sync notes into Quartz content
         run: |
+          echo "Sincronizando notes para content/..."
           rsync -av --delete \
             notes/ content/ \
             --exclude ".obsidian" \
             --exclude ".git" \
             --exclude "_templates"
 
-      - name: Commit changes
+      # 4️⃣ Configurar git
+      - name: Configure Git
         run: |
           git config user.name "Quartz Sync Bot"
           git config user.email "actions@github.com"
-          git add content
-          git commit -m "sync: update notes from notes repo" || echo "No changes"
+
+      # 5️⃣ Adicionar todas as alterações
+      - name: Add changes
+        run: |
+          git add -A
+
+      # 6️⃣ Commit se houver alterações
+      - name: Commit changes
+        run: |
+          git diff --staged --quiet || git commit -m "sync: update notes from notes repo"
+
+      # 7️⃣ Push para branch principal
+      - name: Push changes
+        run: |
+          echo "Enviando alterações para o GitHub..."
           git push
