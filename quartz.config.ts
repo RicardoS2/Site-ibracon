@@ -107,6 +107,7 @@ const config: QuartzConfig = {
     emitters: [
       Plugin.AliasRedirects(),
       Plugin.ComponentResources(),
+      Plugin.FolderPage(), // 🔑 ESSENCIAL
 
       Plugin.ContentPage(),
       Plugin.FolderPage(),
