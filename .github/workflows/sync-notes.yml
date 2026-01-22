@@ -8,6 +8,7 @@ on:
 jobs:
   sync:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout Quartz repo
         uses: actions/checkout@v4
@@ -34,7 +35,7 @@ jobs:
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
 
-      - name: Commit changes
+      - name: Commit and push changes
         run: |
           git add content/
           git diff --cached --quiet || git commit -m "Sync notes from notes repo"
