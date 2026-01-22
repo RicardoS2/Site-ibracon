@@ -2,34 +2,45 @@ import { QuartzConfig } from "./quartz/cfg"
 import * as Plugin from "./quartz/plugins"
 
 /**
- * Quartz 4 Configuration
- *
- * See https://quartz.jzhao.xyz/configuration for more information.
+ * Quartz v4 Configuration — links, assets e callouts OK
  */
 const config: QuartzConfig = {
   configuration: {
-    pageTitle: "Quartz 4",
-    pageTitleSuffix: "",
+    pageTitle: "Clube da Pesquisa",
+    pageTitleSuffix: " · Conhecimento Técnico",
+
     enableSPA: true,
     enablePopovers: true,
+
+    // ⚠️ obrigatório no v4
     analytics: {
       provider: "plausible",
     },
-    locale: "en-US",
-    baseUrl: "quartz.jzhao.xyz",
-    ignorePatterns: ["private", "templates", ".obsidian"],
+
+    locale: "pt-BR",
+
+    // 🔑 GitHub Pages (repo)
+    baseUrl: "/site-ibracon",
+
+    // 🔥 nada privado
+    ignorePatterns: [],
+
     defaultDateType: "modified",
+
     theme: {
       fontOrigin: "googleFonts",
       cdnCaching: true,
+
       typography: {
-        header: "Schibsted Grotesk",
-        body: "Source Sans Pro",
+        header: "Inter",
+        body: "Inter",
         code: "IBM Plex Mono",
       },
+
+      // 🔑 obrigatório no v4
       colors: {
         lightMode: {
-          light: "#faf8f8",
+          light: "#fafafa",
           lightgray: "#e5e5e5",
           gray: "#b8b8b8",
           darkgray: "#4e4e4e",
@@ -53,43 +64,65 @@ const config: QuartzConfig = {
       },
     },
   },
+
   plugins: {
     transformers: [
       Plugin.FrontMatter(),
+
       Plugin.CreatedModifiedDate({
         priority: ["frontmatter", "git", "filesystem"],
       }),
+
+      // 🔑 callouts, embeds, canvas, kanban
+      Plugin.ObsidianFlavoredMarkdown({
+        enableInHtmlEmbed: true,
+      }),
+
+      Plugin.GitHubFlavoredMarkdown(),
+
       Plugin.SyntaxHighlighting({
-        theme: {
-          light: "github-light",
-          dark: "github-dark",
-        },
+        theme: { light: "github-light", dark: "github-dark" },
         keepBackground: false,
       }),
-      Plugin.ObsidianFlavoredMarkdown({ enableInHtmlEmbed: false }),
-      Plugin.GitHubFlavoredMarkdown(),
-      Plugin.TableOfContents(),
-      Plugin.CrawlLinks({ markdownLinkResolution: "shortest" }),
+
+      Plugin.TableOfContents({
+        maxDepth: 4,
+      }),
+
+      // 🔥 ESSENCIAL p/ PDFs e assets em subpath
+      Plugin.CrawlLinks({
+        markdownLinkResolution: "shortest",
+        prettyLinks: true,
+      }),
+
       Plugin.Description(),
-      Plugin.Latex({ renderEngine: "katex" }),
+
+      Plugin.Latex({
+        renderEngine: "katex",
+      }),
     ],
+
     filters: [Plugin.RemoveDrafts()],
+
     emitters: [
       Plugin.AliasRedirects(),
       Plugin.ComponentResources(),
+
       Plugin.ContentPage(),
       Plugin.FolderPage(),
       Plugin.TagPage(),
+
       Plugin.ContentIndex({
         enableSiteMap: true,
         enableRSS: true,
       }),
+
+      // 🖼️ imagens, PDFs, anexos
       Plugin.Assets(),
+
       Plugin.Static(),
       Plugin.Favicon(),
       Plugin.NotFoundPage(),
-      // Comment out CustomOgImages to speed up build time
-      Plugin.CustomOgImages(),
     ],
   },
 }
