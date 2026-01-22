@@ -20,7 +20,7 @@ const config: QuartzConfig = {
     locale: "pt-BR",
 
     // 🔑 GitHub Pages (repo)
-    baseUrl: "/site-ibracon",
+    baseUrl: "https://ricardos2.github.io",
 
     // 🔥 nada privado
     ignorePatterns: [],
