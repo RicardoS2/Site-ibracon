@@ -17,21 +17,21 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-22.04
-
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-node@v4
+      # Trocamos Node por Bun aqui
+      - uses: oven-sh/setup-bun@v1
         with:
-          node-version: 22
+          bun-version: latest
 
       - name: Install dependencies
-        run: npm ci
+        run: bun install --frozen-lockfile
 
       - name: Build Quartz
-        run: npx quartz build
+        run: bunx quartz build
 
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
@@ -44,7 +44,6 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
