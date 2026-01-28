@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Checkout Quartz repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           token: ${{ secrets.QUARTZ_TRIGGER_TOKE }}
           fetch-depth: 0
